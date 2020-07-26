@@ -47,12 +47,12 @@ namespace WeatherServiceApi.RabbitMq
             );
 
             var consumer = new EventingBasicConsumer(this._channel);
-            consumer.Received += (model, ea) =>
+            consumer.Received += async (model, ea) =>
             {
                 var body = ea.Body.ToArray();
                 string message = Encoding.UTF8.GetString(body);
                 var deserialized = JsonConvert.DeserializeObject(message, this._jsonSerializerSettings);
-                this.HandleMessageAsync((T) deserialized);
+                await this.HandleMessageAsync((T) deserialized);
             };
             this._channel.BasicConsume(
                 typeof(T).Name,
