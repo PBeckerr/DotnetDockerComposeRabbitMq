@@ -2,7 +2,7 @@
 
 * RUN `.\DockerCompose.ps1`
 * Browse to http://localhost:5189/weatherforecast
-*Watch the console, messages will be send and received. At this points its easy to add more services to the message and let them chat*
+*Watch the console, messages will be send and received. At this points its easy to add more services to the messagebus and let them chat*
 
 ## Points of interest
 
