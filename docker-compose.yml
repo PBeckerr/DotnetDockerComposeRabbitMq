@@ -1,0 +1,28 @@
+version: '3.4'
+networks:
+    app-tier:
+        driver: bridge
+services:
+    rabbitmq:
+        image: 'bitnami/rabbitmq:latest'
+        networks:
+            - app-tier
+    lorawan:
+        image: ${DOCKER_REGISTRY-}api
+        build:
+            context: .
+            dockerfile: API1/Dockerfile
+        ports:
+            - "5189:443"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Docker
+            - ASPNETCORE_URLS=https://+
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=Kon987456321
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+        volumes:
+            - ~/.aspnet/https:/https:ro
+        networks:
+            - app-tier
+        restart: always
+        depends_on:
+            - "rabbitmq"
