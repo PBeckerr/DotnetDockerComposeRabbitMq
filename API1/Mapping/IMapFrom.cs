@@ -1,6 +1,6 @@
 using AutoMapper;
 
-namespace OrderServiceApi.Mapping
+namespace WeatherServiceApi.Mapping
 {
     public interface IMapFrom<T>
     {

@@ -1,7 +1,7 @@
 using FluentValidation;
-using OrderServiceApi.MediatR.Commands;
+using WeatherServiceApi.MediatR.Commands;
 
-namespace OrderServiceApi.Validation
+namespace WeatherServiceApi.Validation
 {
     public class CreateWeathterForecastCommandValidator : AbstractValidator<CreateWeathterForecastCommand>
     {

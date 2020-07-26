@@ -1,28 +1,25 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using OrderServiceApi.MediatR.Commands;
-using OrderServiceApi.MediatR.Queries;
-using OrderServiceApi.Models;
-using RabbitMQ.Client;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using OrderServiceApi.RabbitMq;
+using WeatherServiceApi.MediatR.Commands;
+using WeatherServiceApi.MediatR.Queries;
+using WeatherServiceApi.Models;
+using WeatherServiceApi.RabbitMq;
 
-namespace OrderServiceApi.Controllers
+namespace WeatherServiceApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IMessageService _messageService;
+        private readonly ISendMessageService _sendMessageService;
 
-        public WeatherForecastController(IMediator mediator, IMessageService messageService)
+        public WeatherForecastController(IMediator mediator, ISendMessageService sendMessageService)
         {
             this._mediator = mediator;
-            this._messageService = messageService;
+            this._sendMessageService = sendMessageService;
         }
 
         [HttpGet]
@@ -33,17 +30,15 @@ namespace OrderServiceApi.Controllers
 
             foreach (var weatherForecast in forecasts)
             {
-                this._messageService.SendMessage(weatherForecast);
+                this._sendMessageService.SendMessage(weatherForecast);
             }
 
             return forecasts;
         }
 
         [HttpPost]
-        public async Task<WeatherForecast> Post(CreateWeathterForecastCommand command)
-        {
-            return await this._mediator.Send(command)
-                             .ConfigureAwait(false);
-        }
+        public async Task<WeatherForecast> Post(CreateWeathterForecastCommand command) =>
+            await this._mediator.Send(command)
+                      .ConfigureAwait(false);
     }
 }

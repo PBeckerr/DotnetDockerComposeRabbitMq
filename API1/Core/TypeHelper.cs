@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OrderServiceApi.Core
+namespace WeatherServiceApi.Core
 {
     public static class TypeHelper
     {

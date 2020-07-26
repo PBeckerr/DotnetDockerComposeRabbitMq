@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 
-namespace OrderServiceApi.Core
+namespace WeatherServiceApi.Core
 {
     public class CustomExceptionHandlerMiddleware
     {
@@ -44,7 +44,7 @@ namespace OrderServiceApi.Core
                 return key;
             }
 
-            var retValue = key.Substring(key.LastIndexOf(".", StringComparison.Ordinal) + 1);
+            string retValue = key.Substring(key.LastIndexOf(".", StringComparison.Ordinal) + 1);
             return retValue;
         }
 
@@ -94,10 +94,8 @@ namespace OrderServiceApi.Core
 
     public static class CustomExceptionHandlerMiddlewareExtensions
     {
-        public static IApplicationBuilder UseCustomExceptionHandler(this IApplicationBuilder builder)
-        {
-            return builder.UseMiddleware<CustomExceptionHandlerMiddleware>();
-        }
+        public static IApplicationBuilder UseCustomExceptionHandler(this IApplicationBuilder builder) =>
+            builder.UseMiddleware<CustomExceptionHandlerMiddleware>();
     }
 
     public class ValidationException : Exception
@@ -115,7 +113,7 @@ namespace OrderServiceApi.Core
                                 .Select(e => e.PropertyName)
                                 .Distinct();
 
-            foreach (var propertyName in propertyNames)
+            foreach (string propertyName in propertyNames)
             {
                 var propertyFailures = failures
                                        .Where(e => e.PropertyName == propertyName)

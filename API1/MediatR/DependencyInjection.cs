@@ -2,9 +2,9 @@
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using OrderServiceApi.MediatR.Behaviors;
+using WeatherServiceApi.MediatR.Behaviors;
 
-namespace OrderServiceApi.MediatR
+namespace WeatherServiceApi.MediatR
 {
     public static class DependencyInjection
     {

@@ -6,17 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
-using OrderServiceApi.Core;
-using OrderServiceApi.MediatR;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
-using System;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using OrderServiceApi.RabbitMq;
+using WeatherServiceApi.Core;
+using WeatherServiceApi.MediatR;
+using WeatherServiceApi.RabbitMq;
 
-namespace OrderServiceApi
+namespace WeatherServiceApi
 {
     public class Startup
     {
@@ -54,7 +48,8 @@ namespace OrderServiceApi
 
             // Customise default API behaviour
             services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
-            services.AddSingleton<IMessageService, MessageService>();
+            services.AddSingleton<ISendMessageService, SendSendMessageService>();
+            services.AddOptions<RabbitMqOptions>().Bind(Configuration.GetSection(RabbitMqOptions.RabbitMq));
             services.AddMessageServices();
         }
     }

@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 
-namespace OrderServiceApi.MediatR.Behaviors
+namespace WeatherServiceApi.MediatR.Behaviors
 {
     /// <summary>
     ///     Can be used to slow down whole handling of request.

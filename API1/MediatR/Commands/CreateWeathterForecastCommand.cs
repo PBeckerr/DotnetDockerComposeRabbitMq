@@ -3,11 +3,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
-using OrderServiceApi.Mapping;
-using OrderServiceApi.MediatR.Queries;
-using OrderServiceApi.Models;
+using WeatherServiceApi.Mapping;
+using WeatherServiceApi.MediatR.Queries;
+using WeatherServiceApi.Models;
 
-namespace OrderServiceApi.MediatR.Commands
+namespace WeatherServiceApi.MediatR.Commands
 {
     public class CreateWeathterForecastCommand : IRequest<WeatherForecast>, IMapFrom<WeatherForecast>
     {

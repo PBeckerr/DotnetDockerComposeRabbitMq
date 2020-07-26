@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using AutoMapper;
 
-namespace OrderServiceApi.Mapping
+namespace WeatherServiceApi.Mapping
 {
     public class MappingProfile : Profile
     {
@@ -15,10 +15,14 @@ namespace OrderServiceApi.Mapping
         private void ApplyMappingsFromAssembly(Assembly assembly)
         {
             var types = assembly.GetExportedTypes()
-                                .Where(t => t.GetInterfaces()
-                                             .Any(i =>
-                                                      i.IsGenericType && i.GetGenericTypeDefinition()
-                                                      == typeof(IMapFrom<>)))
+                                .Where(
+                                    t => t.GetInterfaces()
+                                          .Any(
+                                              i =>
+                                                  i.IsGenericType && i.GetGenericTypeDefinition()
+                                                  == typeof(IMapFrom<>)
+                                          )
+                                )
                                 .ToList();
 
             foreach (var type in types)
@@ -35,14 +39,13 @@ namespace OrderServiceApi.Mapping
                     var interfaces = type.GetInterfaces();
                     foreach (var @interface in interfaces)
                     {
-                        if(@interface.IsGenericType && @interface.GetGenericTypeDefinition() == typeof(IMapFrom<>))
+                        if (@interface.IsGenericType && @interface.GetGenericTypeDefinition() == typeof(IMapFrom<>))
                         {
                             var interfaceMethod = @interface.GetMethod("Mapping");
                             interfaceMethod?.Invoke(instance, new object[] {this});
                         }
                     }
                 }
-                
             }
         }
     }

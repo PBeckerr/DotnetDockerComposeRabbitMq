@@ -1,6 +1,6 @@
 using System;
 
-namespace OrderServiceApi.Models
+namespace WeatherServiceApi.Models
 {
     public class WeatherForecast
     {

@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
-using ValidationException = OrderServiceApi.Core.ValidationException;
+using ValidationException = WeatherServiceApi.Core.ValidationException;
 
-namespace OrderServiceApi.MediatR.Behaviors
+namespace WeatherServiceApi.MediatR.Behaviors
 {
     public class RequestValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
@@ -18,8 +18,11 @@ namespace OrderServiceApi.MediatR.Behaviors
             this._validators = validators;
         }
 
-        public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken,
-                                      RequestHandlerDelegate<TResponse> next)
+        public Task<TResponse> Handle(
+            TRequest request,
+            CancellationToken cancellationToken,
+            RequestHandlerDelegate<TResponse> next
+        )
         {
             var context = new ValidationContext<TRequest>(request);
 
