@@ -16,7 +16,6 @@ namespace WeatherServiceApi.RabbitMq
         private readonly ConnectionFactory _factory;
         private readonly JsonSerializerSettings _jsonSerializerSettings;
         private readonly ILogger<SendSendMessageService> _logger;
-        private readonly Dictionary<Type, List<Action<object>>> onReceiveActions = new Dictionary<Type, List<Action<object>>>();
 
         public SendSendMessageService(ILogger<SendSendMessageService> logger, IOptions<RabbitMqOptions> options)
         {
