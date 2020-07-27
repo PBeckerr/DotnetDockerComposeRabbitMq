@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using WeatherServiceApi.Models;
+using WeatherServiceApi.Message.Domain;
 
 namespace WeatherServiceApi.MediatR.Queries
 {

@@ -1,3 +1,5 @@
+using Api.RabbitMq;
+using Api.RabbitMq.Abstractions;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

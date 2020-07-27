@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using Api.RabbitMq.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WeatherServiceApi.Core;
 
-namespace WeatherServiceApi.RabbitMq
+namespace Api.RabbitMq
 {
     public static class DependencyExtensions
     {
@@ -23,22 +23,25 @@ namespace WeatherServiceApi.RabbitMq
                 );
             }
 
-            var hostedServices_FromAssemblies = Assembly.GetExecutingAssembly()
-                                                        .GetTypes()
+            var hostedServices_FromAssemblies = Assembly.GetEntryAssembly()
+                                                        ?.DefinedTypes
                                                         .Where(
                                                             x => TypeHelper.IsSubclassOfRawGeneric(typeof(BasicReceiveService<>), x)
                                                                  && !x.ContainsGenericParameters
                                                         );
 
-            foreach (var hostedService in hostedServices_FromAssemblies)
+            if (hostedServices_FromAssemblies != null)
             {
-                if (typeof(IHostedService).IsAssignableFrom(hostedService))
+                foreach (var hostedService in hostedServices_FromAssemblies)
                 {
-                    var genericMethod_AddHostedService = methodInfo.MakeGenericMethod(hostedService);
-                    _ = genericMethod_AddHostedService.Invoke(
-                        null,
-                        new object[] {services}
-                    );
+                    if (typeof(IHostedService).IsAssignableFrom(hostedService))
+                    {
+                        var genericMethod_AddHostedService = methodInfo.MakeGenericMethod(hostedService);
+                        _ = genericMethod_AddHostedService.Invoke(
+                            null,
+                            new object[] {services}
+                        );
+                    }
                 }
             }
 

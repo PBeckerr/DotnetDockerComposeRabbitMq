@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Api.RabbitMq.Abstractions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WeatherServiceApi.MediatR.Commands;
 using WeatherServiceApi.MediatR.Queries;
-using WeatherServiceApi.Models;
+using WeatherServiceApi.Message.Domain;
 using WeatherServiceApi.RabbitMq;
 
 namespace WeatherServiceApi.Controllers
@@ -32,6 +33,7 @@ namespace WeatherServiceApi.Controllers
             {
                 this._sendMessageService.SendMessage(weatherForecast);
             }
+            this._sendMessageService.SendMessage(new WeatherForecastList{Entities = forecasts});
 
             return forecasts;
         }

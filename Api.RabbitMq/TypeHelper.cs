@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WeatherServiceApi.Core
+namespace Api.RabbitMq
 {
     public static class TypeHelper
     {

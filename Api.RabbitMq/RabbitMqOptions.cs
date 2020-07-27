@@ -1,4 +1,4 @@
-﻿namespace WeatherServiceApi.RabbitMq
+﻿namespace Api.RabbitMq
 {
     public class RabbitMqOptions
     {

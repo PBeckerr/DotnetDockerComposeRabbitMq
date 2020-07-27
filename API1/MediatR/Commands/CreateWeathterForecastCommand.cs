@@ -5,7 +5,7 @@ using AutoMapper;
 using MediatR;
 using WeatherServiceApi.Mapping;
 using WeatherServiceApi.MediatR.Queries;
-using WeatherServiceApi.Models;
+using WeatherServiceApi.Message.Domain;
 
 namespace WeatherServiceApi.MediatR.Commands
 {

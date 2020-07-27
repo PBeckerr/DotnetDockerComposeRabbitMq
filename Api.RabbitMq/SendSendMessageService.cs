@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
 using System.Text;
-using Microsoft.Extensions.Configuration;
+using Api.RabbitMq.Abstractions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
+using WeatherServiceApi.Message.Domain;
+using Formatting = System.Xml.Formatting;
 
-namespace WeatherServiceApi.RabbitMq
+namespace Api.RabbitMq
 {
     public class SendSendMessageService : ISendMessageService
     {
@@ -32,7 +32,7 @@ namespace WeatherServiceApi.RabbitMq
 
         public void SendMessage<T>(T message)
         {
-            string json = JsonConvert.SerializeObject(message, Formatting.None, this._jsonSerializerSettings);
+            string json = JsonConvert.SerializeObject(message, this._jsonSerializerSettings);
             var body = Encoding.UTF8.GetBytes(json);
             this._channel.QueueDeclare(
                 typeof(T).Name,

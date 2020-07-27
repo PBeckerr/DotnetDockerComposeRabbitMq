@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
@@ -10,7 +8,7 @@ using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace WeatherServiceApi.RabbitMq
+namespace Api.RabbitMq.Abstractions
 {
     public abstract class BasicReceiveService<T> : IHostedService
     {
@@ -33,7 +31,7 @@ namespace WeatherServiceApi.RabbitMq
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            this._factory = new ConnectionFactory {HostName = _options.Value.Host, UserName = _options.Value.UserName, Password = _options.Value.Password};
+            this._factory = new ConnectionFactory {HostName = this._options.Value.Host, UserName = this._options.Value.UserName, Password = this._options.Value.Password};
             this._factory.UserName = "user";
             this._factory.Password = "bitnami";
             this._conn = this._factory.CreateConnection();
@@ -69,6 +67,6 @@ namespace WeatherServiceApi.RabbitMq
             return Task.CompletedTask;
         }
 
-        public abstract Task HandleMessageAsync(T message);
+        protected abstract Task HandleMessageAsync(T message);
     }
 }

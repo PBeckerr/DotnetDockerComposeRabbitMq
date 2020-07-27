@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
+using Api.RabbitMq;
+using Api.RabbitMq.Abstractions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using WeatherServiceApi.Models;
+using WeatherServiceApi.Message.Domain;
 
 namespace WeatherServiceApi.RabbitMq
 {
@@ -11,7 +13,7 @@ namespace WeatherServiceApi.RabbitMq
         {
         }
 
-        public override Task HandleMessageAsync(WeatherForecast message)
+        protected override Task HandleMessageAsync(WeatherForecast message)
         {
             this._logger.LogInformation("Received weather, TemperateC: " + message.TemperatureC);
             return Task.CompletedTask;
