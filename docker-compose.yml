@@ -4,7 +4,14 @@ networks:
         driver: bridge
 services:
     rabbitmq:
-        image: 'bitnami/rabbitmq:latest'
+        image: 'docker.io/bitnami/rabbitmq:3.8-debian-10'
+        ports:
+          - '4369:4369'
+          - '5672:5672'
+          - '25672:25672'
+          - '15672:15672'
+        volumes:
+          - 'rabbitmq_data:/bitnami'
         networks:
             - app-tier
     lorawan:
@@ -24,3 +31,6 @@ services:
         restart: always
         depends_on:
             - "rabbitmq"
+volumes:
+    rabbitmq_data:
+        driver: local
