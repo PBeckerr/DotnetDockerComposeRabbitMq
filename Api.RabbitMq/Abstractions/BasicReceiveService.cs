@@ -36,27 +36,24 @@ namespace Api.RabbitMq.Abstractions
             this._factory.Password = "bitnami";
             this._conn = this._factory.CreateConnection();
             this._channel = this._conn.CreateModel();
-            this._channel.QueueDeclare(
-                typeof(T).Name,
-                false,
-                false,
-                false,
-                null
-            );
+            _channel.ExchangeDeclare(exchange: typeof(T).Name, type: ExchangeType.Fanout);
 
-            var consumer = new EventingBasicConsumer(this._channel);
+            var queueName = _channel.QueueDeclare().QueueName;
+            _channel.QueueBind(queue: queueName,
+                              exchange: typeof(T).Name,
+                              routingKey: "");
+
+            var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += async (model, ea) =>
             {
                 var body = ea.Body.ToArray();
-                string message = Encoding.UTF8.GetString(body);
+                var message = Encoding.UTF8.GetString(body);
                 var deserialized = JsonConvert.DeserializeObject(message, this._jsonSerializerSettings);
                 await this.HandleMessageAsync((T) deserialized);
             };
-            this._channel.BasicConsume(
-                typeof(T).Name,
-                true,
-                consumer
-            );
+            _channel.BasicConsume(queue: queueName,
+                                 autoAck: true,
+                                 consumer: consumer);
             return Task.CompletedTask;
         }
 

@@ -4,8 +4,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
-using WeatherServiceApi.Message.Domain;
-using Formatting = System.Xml.Formatting;
 
 namespace Api.RabbitMq
 {
@@ -34,20 +32,17 @@ namespace Api.RabbitMq
         {
             string json = JsonConvert.SerializeObject(message, this._jsonSerializerSettings);
             var body = Encoding.UTF8.GetBytes(json);
-            this._channel.QueueDeclare(
-                typeof(T).Name,
-                false,
-                false,
-                false,
-                null
-            );
-            this._channel.BasicPublish(
-                "",
-                typeof(T).Name,
-                null,
-                body
-            );
+            this.EnsureQueueCreated<T>();
+            _channel.BasicPublish(exchange: typeof(T).Name,
+                                 routingKey: "",
+                                 basicProperties: null,
+                                 body: body);
             this._logger.LogInformation(" [x] Published {0} to RabbitMQ", json);
+        }
+
+        private void EnsureQueueCreated<T>()
+        {
+            _channel.ExchangeDeclare(exchange: typeof(T).Name, type: ExchangeType.Fanout);
         }
     }
 }
